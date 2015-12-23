@@ -126,7 +126,13 @@
                 _decoder = value.GetDecoder();
 
                 var raw = _raw.ToArray();
+#if true
+                var content_chars = new Char[_encoding.GetMaxCharCount(raw.Length)];
+                _decoder.GetChars(raw, 0, raw.Length, content_chars, 0);
+                var content = new String(content_chars);
+#else
                 var content = _encoding.GetString(raw, 0, raw.Length);
+#endif
                 var index = Math.Min(_index, content.Length);
 
                 if (content.Substring(0, index).Equals(_content.ToString(0, index)))
