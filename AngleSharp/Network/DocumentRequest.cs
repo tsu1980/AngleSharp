@@ -115,6 +115,32 @@
         }
 
         /// <summary>
+        /// Creates a POST request for the given target with the fields being
+        /// used to generate the body and encoding type multipart.
+        /// </summary>
+        /// <param name="target">The target to use.</param>
+        /// <param name="fields">The fields to send.</param>
+        /// <returns>The new document request.</returns>
+        public static DocumentRequest PostAsMultipart(Url target, IDictionary<String, object> fields)
+        {
+            if (fields == null)
+                throw new ArgumentNullException("fields");
+
+            var fds = new FormDataSet();
+
+            foreach (var field in fields)
+            {
+                if (field.Value is AngleSharp.Dom.Io.IFile)
+                    fds.Append(field.Key, (AngleSharp.Dom.Io.IFile)field.Value, InputTypeNames.File);
+                else
+                    fds.Append(field.Key, (String)field.Value, InputTypeNames.Text);
+            }
+
+            var enctype = String.Concat(MimeTypes.MultipartForm, "; boundary=", fds.Boundary);
+            return Post(target, fds.AsMultipart(), enctype);
+        }
+
+        /// <summary>
         /// Gets or sets the source of the request, if any.
         /// </summary>
         public INode Source
