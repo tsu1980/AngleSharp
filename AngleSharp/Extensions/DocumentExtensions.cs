@@ -231,6 +231,7 @@
         {
             await TaskEx.WhenAll(document.GetScriptDownloads()).ConfigureAwait(false);
             await TaskEx.WhenAll(document.GetStyleSheetDownloads()).ConfigureAwait(false);
+            await TaskEx.WhenAll(document.GetFrameLoads()).ConfigureAwait(false);
         }
 
         /// <summary>

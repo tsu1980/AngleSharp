@@ -57,6 +57,7 @@
         HtmlCollection<IHtmlEmbedElement> _plugins;
         HtmlElementCollection _commands;
         HtmlElementCollection _links;
+        HtmlCollection<IHtmlFrameElement> _frames;
 
         #endregion
 
@@ -779,6 +780,14 @@
         public IHtmlCollection<IElement> Links
         {
             get { return _links ?? (_links = new HtmlElementCollection(this, predicate: IsLink)); }
+        }
+
+        /// <summary>
+        /// Gets a list of frames within the current document.
+        /// </summary>
+        public IHtmlCollection<IHtmlFrameElement> Frames
+        {
+            get { return _frames ?? (_frames = new HtmlCollection<IHtmlFrameElement>(this, predicate: IsFrame)); }
         }
 
         /// <summary>
@@ -1572,6 +1581,11 @@
             return _tasks.OfOriginType<HtmlLinkElement>();
         }
 
+        internal IEnumerable<Task> GetFrameLoads()
+        {
+            return _tasks.OfOriginType<HtmlFrameElement>();
+        }
+
         /// <summary>
         /// Finishes writing to a document.
         /// </summary>
@@ -1584,6 +1598,8 @@
                 await this.WaitForReady().ConfigureAwait(false);
                 _loadingScripts.Dequeue().Run();
             }
+
+            await this.WaitForReady().ConfigureAwait(false);
 
             this.QueueTask(RaiseDomContentLoaded);
             this.QueueTask(RaiseLoadedEvent);
@@ -1704,6 +1720,11 @@
         static Boolean IsLink(IElement element)
         {
             return (element is IHtmlAnchorElement || element is IHtmlAreaElement) && element.Attributes.Any(m => String.Equals(m.Name, AttributeNames.Href, StringComparison.Ordinal));
+        }
+
+        static Boolean IsFrame(IElement element)
+        {
+            return element is IHtmlFrameElement;
         }
 
         static Boolean IsAnchor(IHtmlAnchorElement element)

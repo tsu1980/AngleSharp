@@ -417,6 +417,12 @@
         IHtmlCollection<IElement> Links { get; }
 
         /// <summary>
+        /// Gets a list of frames within the current document.
+        /// </summary>
+        [DomName("frames")]
+        IHtmlCollection<IHtmlFrameElement> Frames { get; }
+
+        /// <summary>
         /// Gets or sets the title of the document.
         /// </summary>
         [DomName("title")]

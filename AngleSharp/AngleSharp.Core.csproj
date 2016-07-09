@@ -167,6 +167,7 @@
     <Compile Include="Foundation\CancellableTasks.cs" />
     <Compile Include="Foundation\TaskEx.cs" />
     <Compile Include="IBindable.cs" />
+    <Compile Include="Interfaces\Html\IHtmlFrameElement.cs" />
     <Compile Include="Interfaces\INamedNodeMap.cs" />
     <Compile Include="IStyleFormattable.cs" />
     <Compile Include="IStyleFormatter.cs" />
