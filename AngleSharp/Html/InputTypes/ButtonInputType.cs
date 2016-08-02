@@ -19,7 +19,8 @@
 
         public override Boolean IsAppendingData(IHtmlElement submitter)
         {
-            return Name.Is(InputTypeNames.Reset) == false || Object.ReferenceEquals(submitter, Input);
+            return (Name.Is(InputTypeNames.Reset) == false || Object.ReferenceEquals(submitter, Input)) &&
+                !(Input.LocalName.Is(Tags.Input) && Name.Is(InputTypeNames.Button));  // Ignore input[type=button]
         }
 
         #endregion
