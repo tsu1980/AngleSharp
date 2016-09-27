@@ -288,36 +288,31 @@
 
         Char NormalizeForward(Char p)
         {
-            if (p == Symbols.CarriageReturn)
+            if (p != Symbols.CarriageReturn)
             {
-                var n = _source.ReadCharacter();
-
-                if (n == Symbols.LineFeed)
-                    return n;
-
+                return p;
+            }
+            else if (_source.ReadCharacter() != Symbols.LineFeed)
+            {
                 _source.Index--;
-                return Symbols.LineFeed;
             }
 
-            return p;
+            return Symbols.LineFeed;
         }
 
         Char NormalizeBackward(Char p)
         {
-            if (p == Symbols.CarriageReturn)
+            if (p != Symbols.CarriageReturn)
             {
-                var n = _source[_source.Index];
-
-                if (n == Symbols.LineFeed)
-                {
-                    BackUnsafe();
-                    return Symbols.Null;
-                }
-
-                return Symbols.LineFeed;
+                return p;
+            }
+            else if (_source.Index < _source.Length && _source[_source.Index] == Symbols.LineFeed)
+            {
+                BackUnsafe();
+                return Symbols.Null;
             }
 
-            return p;
+            return Symbols.LineFeed;
         }
 
         #endregion
