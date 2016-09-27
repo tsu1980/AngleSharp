@@ -2117,6 +2117,9 @@
     <Compile Include="..\AngleSharp\Interfaces\Html\IHtmlFormElement.cs">
       <Link>Interfaces\Html\IHtmlFormElement.cs</Link>
     </Compile>
+    <Compile Include="..\AngleSharp\Interfaces\Html\IHtmlFrameElement.cs">
+      <Link>Interfaces\Html\IHtmlFrameElement.cs</Link>
+    </Compile>
     <Compile Include="..\AngleSharp\Interfaces\Html\IHtmlHeadElement.cs">
       <Link>Interfaces\Html\IHtmlHeadElement.cs</Link>
     </Compile>
