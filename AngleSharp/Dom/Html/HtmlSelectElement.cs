@@ -194,14 +194,43 @@
         internal override void ConstructDataSet(FormDataSet dataSet, IHtmlElement submitter)
         {
             var options = Options;
+            bool isAdded = false;
 
             for (int i = 0; i < options.Length; i++)
             {
                 var option = options.GetOptionAt(i);
 
                 if (option.IsSelected && !option.IsDisabled)
+                {
                     dataSet.Append(Name, option.Value, Type);
+                    isAdded = true;
+                }
             }
+
+            if (!isAdded)
+            {
+                // Select default option if there is no selected options
+                var option = GetDefaultOptionOrNull();
+                if (option != null)
+                {
+                    dataSet.Append(Name, option.Value, Type);
+                }
+            }
+        }
+
+        private IHtmlOptionElement GetDefaultOptionOrNull()
+        {
+            var options = Options;
+
+            for (int i = 0; i < options.Length; i++)
+            {
+                var option = options.GetOptionAt(i);
+
+                if (!option.IsDisabled)
+                    return option;
+            }
+
+            return null;
         }
 
         protected override Boolean CanBeValidated()
