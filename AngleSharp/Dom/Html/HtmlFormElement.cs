@@ -270,7 +270,8 @@
             {
                 //Do nothing.
             }
-            else if (!submittedFromSubmitMethod && !from.HasAttribute(AttributeNames.FormNoValidate) && NoValidate && !CheckValidity())
+            // Validityは無効化する 2016/11/21
+            else if (false || !submittedFromSubmitMethod && !from.HasAttribute(AttributeNames.FormNoValidate) && !NoValidate && !CheckValidity())
             {
                 this.FireSimpleEvent(EventNames.Invalid);
             }
