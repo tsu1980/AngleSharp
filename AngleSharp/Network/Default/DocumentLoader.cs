@@ -52,6 +52,11 @@
             if (request.Referer != null)
                 data.Headers[HeaderNames.Referer] = request.Referer;
 
+            foreach (var customHeader in request.CustomHeaders)
+            {
+                data.Headers[customHeader.Key] = customHeader.Value;
+            }
+
             return _requesters.LoadAsync(data, events, cancel);
         }
     }
