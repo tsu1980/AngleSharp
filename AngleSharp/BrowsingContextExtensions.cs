@@ -11,6 +11,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Net;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -50,6 +51,22 @@
                 context = BrowsingContext.New();
 
             var source = new TextSource(response.Content, context.Configuration.DefaultEncoding());
+
+            // Set TextSource encoding from HTTP header. modify by tsu1980
+            var contentType = response.GetContentType();
+            if (!string.IsNullOrEmpty(contentType))
+            {
+                var m = Regex.Match(contentType, @"charset=(\w+)");
+                if (m.Success)
+                {
+                    var charset = m.Groups[1].Value;
+                    if (!String.IsNullOrEmpty(charset) && TextEncoding.IsSupported(charset))
+                    {
+                        source.CurrentEncoding = TextEncoding.Resolve(charset);
+                    }
+                }
+            }
+
             var document = await context.LoadDocumentAsync(response, source, cancel).ConfigureAwait(false);
             context.NavigateTo(document);
             return document;
