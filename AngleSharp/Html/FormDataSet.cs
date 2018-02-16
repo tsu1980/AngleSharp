@@ -1,4 +1,4 @@
-﻿namespace AngleSharp.Html
+namespace AngleSharp.Html
 {
     using AngleSharp.Dom.Io;
     using AngleSharp.Extensions;
@@ -159,6 +159,16 @@
 
         public void Append(String name, String value, String type)
         {
+            // radioタイプの場合、同名の項目が既に登録済みなら、削除する
+            if (type == "radio")
+            {
+                var sameNameEntry = _entries.FirstOrDefault(s => s.Name == name);
+                if (sameNameEntry != null)
+                {
+                    _entries.Remove(sameNameEntry);
+                }
+            }
+
             if (String.Compare(type, Tags.Textarea, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 name = Normalize(name);
