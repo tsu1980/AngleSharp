@@ -61,6 +61,7 @@ namespace AngleSharp.Html
             CheckBoundaries(encoding);
             ReplaceCharset(encoding);
             var tw = new StreamWriter(ms, encoding);
+            tw.NewLine = "\r\n";
 
             foreach (var entry in _entries)
             {
